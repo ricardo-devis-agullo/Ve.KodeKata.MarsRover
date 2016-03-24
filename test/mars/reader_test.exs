@@ -17,28 +17,28 @@ defmodule Mars.ReaderTest do
   end
 
   test "initial orientation with north" do
-    capture_io("north", fn ->
+    capture_io("N", fn ->
       result = Mars.Reader.get_initial_orientation
       assert result == :north
     end)
   end
 
   test "initial orientation with east" do
-    capture_io("east", fn ->
+    capture_io("E", fn ->
       result = Mars.Reader.get_initial_orientation
       assert result == :east
     end)
   end
 
   test "initial orientation with south" do
-    capture_io("south", fn ->
+    capture_io("S", fn ->
       result = Mars.Reader.get_initial_orientation
       assert result == :south
     end)
   end
 
   test "initial orientation with west" do
-    capture_io("west", fn ->
+    capture_io("W", fn ->
       result = Mars.Reader.get_initial_orientation
       assert result == :west
     end)

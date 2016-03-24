@@ -1,6 +1,7 @@
 defmodule Mars.Reader do
   @type point :: {number, number}
   @type dimensions :: {number, number}
+  @type orientation :: atom
 
   @spec get_robot :: %Mars.Robot{}
   def get_robot do
@@ -12,7 +13,7 @@ defmodule Mars.Reader do
   @spec get_grid_size :: dimensions
   def get_grid_size do
     size = IO.gets "Grid size: "
-    convert_to_tuple(size)
+    compute_grid_size(size)
   end
 
   @spec get_initial_position :: point
@@ -21,9 +22,9 @@ defmodule Mars.Reader do
     compute_position(position)
   end
 
-  @spec get_initial_orientation :: atom
+  @spec get_initial_orientation :: orientation
   def get_initial_orientation do
-    orientation = IO.gets "Initial orientation (north, east, south or west): "
+    orientation = IO.gets "Initial orientation (N, E, S or W): "
     orientation
     |> String.rstrip
     |> compute_orientation
@@ -48,7 +49,7 @@ defmodule Mars.Reader do
     end
   end
 
-  def compute_grid_size(size) do
+  defp compute_grid_size(size) do
     if valid_numbers?(size) do
       convert_to_tuple(size)
     else
@@ -61,10 +62,10 @@ defmodule Mars.Reader do
     Regex.match?(~r/-?\d+\s+-?\d+/, position)
   end
 
-  defp convert_orientation("north"), do: :north
-  defp convert_orientation("east"), do: :east
-  defp convert_orientation("south"), do: :south
-  defp convert_orientation("west"), do: :west
+  defp convert_orientation("N"), do: :north
+  defp convert_orientation("E"), do: :east
+  defp convert_orientation("S"), do: :south
+  defp convert_orientation("W"), do: :west
   defp convert_orientation(_other_word), do: :error
 
   defp convert_to_tuple(input, separator \\ " ") do

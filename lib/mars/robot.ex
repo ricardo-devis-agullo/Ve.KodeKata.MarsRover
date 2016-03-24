@@ -5,6 +5,8 @@ defmodule Mars.Robot do
   """
   alias Mars.Robot
   @type action :: atom
+  @type position :: {number, number}
+  @type orientation :: atom
   defstruct orientation: :north, position: {1, 1}
 
   @doc """
