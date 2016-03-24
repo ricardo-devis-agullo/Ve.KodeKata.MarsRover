@@ -11,7 +11,7 @@ defmodule Mars.Reader do
   @spec get_grid_size :: {number, number}
   def get_grid_size do
     size = IO.gets "Grid size: "
-    convert_to_tuple(size, ",")
+    convert_to_tuple(size)
   end
 
   @spec get_initial_position :: {number, number}
@@ -40,7 +40,7 @@ defmodule Mars.Reader do
 
   defp compute_position(position) do
     if valid_position?(position) do
-      convert_to_tuple(position, ",")
+      convert_to_tuple(position)
     else
       IO.puts("The format is not valid.")
       get_initial_position
@@ -48,7 +48,7 @@ defmodule Mars.Reader do
   end
 
   defp valid_position?(position) do
-    Regex.match?(~r/-?\d+\s*,\s*-?\d+/, position)
+    Regex.match?(~r/-?\d+\s+-?\d+/, position)
   end
 
   defp convert_orientation("north"), do: :north
@@ -57,7 +57,7 @@ defmodule Mars.Reader do
   defp convert_orientation("west"), do: :west
   defp convert_orientation(_other_word), do: :error
 
-  defp convert_to_tuple(input, separator) do
+  defp convert_to_tuple(input, separator \\ " ") do
     input
     |> String.rstrip
     |> String.split(separator)
