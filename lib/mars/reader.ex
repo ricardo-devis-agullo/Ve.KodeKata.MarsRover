@@ -1,20 +1,21 @@
 defmodule Mars.Reader do
+  @type point :: {number, number}
+  @type dimensions :: {number, number}
 
   @spec get_robot :: %Mars.Robot{}
   def get_robot do
-    # size = get_grid_size
     position = get_initial_position
     orientation = get_initial_orientation
     %Mars.Robot{orientation: orientation, position: position}
   end
 
-  @spec get_grid_size :: {number, number}
+  @spec get_grid_size :: dimensions
   def get_grid_size do
     size = IO.gets "Grid size: "
     convert_to_tuple(size)
   end
 
-  @spec get_initial_position :: {number, number}
+  @spec get_initial_position :: point
   def get_initial_position do
     position = IO.gets "Initial position: "
     compute_position(position)
@@ -39,7 +40,7 @@ defmodule Mars.Reader do
   end
 
   defp compute_position(position) do
-    if valid_position?(position) do
+    if valid_numbers?(position) do
       convert_to_tuple(position)
     else
       IO.puts("The format is not valid.")
@@ -47,7 +48,16 @@ defmodule Mars.Reader do
     end
   end
 
-  defp valid_position?(position) do
+  def compute_grid_size(size) do
+    if valid_numbers?(size) do
+      convert_to_tuple(size)
+    else
+      IO.puts("The format is not valid.")
+      get_grid_size
+    end
+  end
+
+  defp valid_numbers?(position) do
     Regex.match?(~r/-?\d+\s+-?\d+/, position)
   end
 
