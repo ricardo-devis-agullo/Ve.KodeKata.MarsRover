@@ -30,6 +30,23 @@ defmodule Mars.Reader do
     |> compute_orientation
   end
 
+  def get_command do
+    command = IO.gets "Select command (f, b, r or l): "
+    command
+    |> String.rstrip
+    |> compute_command
+  end
+
+  defp compute_command(command) do
+    case convert_command(command) do
+      :error ->
+        IO.puts("The command is not valid.")
+        get_command
+      _ ->
+        convert_command(command)
+    end
+  end
+
   defp compute_orientation(orientation) do
     case convert_orientation(orientation) do
       :error ->
@@ -67,6 +84,12 @@ defmodule Mars.Reader do
   defp convert_orientation("S"), do: :south
   defp convert_orientation("W"), do: :west
   defp convert_orientation(_other_word), do: :error
+
+  defp convert_command("f"), do: :forward
+  defp convert_command("b"), do: :backward
+  defp convert_command("r"), do: :turn_right
+  defp convert_command("l"), do: :turn_left
+  defp convert_command(_other_word), do: :error
 
   defp convert_to_tuple(input, separator \\ " ") do
     input
