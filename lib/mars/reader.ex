@@ -26,14 +26,14 @@ defmodule Mars.Reader do
   def get_initial_orientation do
     orientation = IO.gets "Initial orientation (N, E, S or W): "
     orientation
-    |> String.rstrip
+    |> String.strip
     |> compute_orientation
   end
 
   def get_command do
     command = IO.gets "Select command (f, b, r or l): "
     command
-    |> String.rstrip
+    |> String.strip
     |> compute_command
   end
 
@@ -93,7 +93,7 @@ defmodule Mars.Reader do
 
   defp convert_to_tuple(input, separator \\ " ") do
     input
-    |> String.rstrip
+    |> String.strip
     |> String.split(separator)
     |> Enum.map(&String.to_integer/1)
     |> List.to_tuple
