@@ -16,12 +16,12 @@ defmodule Mars.Robot do
 
   @spec do_actions(%Robot{}, [action]) :: %Robot{}
 
-  def do_actions(%Robot{position: {x, y}, orientation: orientation}, []) do
-    %Robot{orientation: orientation, position: {x, y}}
+  def do_actions(robot = %Robot{}, []) do
+    robot
   end
 
-  def do_actions(%Robot{orientation: orientation, position: {x, y}}, [first_action | rest]) do
-    do_action(%Robot{orientation: orientation, position: {x, y}}, first_action)
+  def do_actions(robot = %Robot{}, [first_action | rest]) do
+    do_action(robot, first_action)
     |> do_actions(rest)
   end
 
@@ -38,28 +38,28 @@ defmodule Mars.Robot do
   @spec do_action(%Robot{}, action) :: %Robot{}
 
   #Move forward
-  def do_action(%Robot{orientation: :north, position: {x, y}}, :forward), do: %Robot{orientation: :north, position: move_square({x, y}, :up)}
-  def do_action(%Robot{orientation: :east, position: {x, y}}, :forward), do: %Robot{orientation: :east, position: move_square({x, y}, :right)}
-  def do_action(%Robot{orientation: :south, position: {x, y}}, :forward), do: %Robot{orientation: :south, position: move_square({x, y}, :down)}
-  def do_action(%Robot{orientation: :west, position: {x, y}}, :forward), do: %Robot{orientation: :west, position: move_square({x, y}, :left)}
+  def do_action(robot = %Robot{orientation: :north, position: {x, y}}, :forward), do: %{robot | position: move_square({x, y}, :up)}
+  def do_action(robot = %Robot{orientation: :east, position: {x, y}}, :forward), do: %{robot | position: move_square({x, y}, :right)}
+  def do_action(robot = %Robot{orientation: :south, position: {x, y}}, :forward), do: %{robot | position: move_square({x, y}, :down)}
+  def do_action(robot = %Robot{orientation: :west, position: {x, y}}, :forward), do: %{robot | position: move_square({x, y}, :left)}
 
   # Moving backward
-  def do_action(%Robot{orientation: :north, position: {x, y}}, :backward), do: %Robot{orientation: :north, position: move_square({x, y}, :down)}
-  def do_action(%Robot{orientation: :east, position: {x, y}}, :backward), do: %Robot{orientation: :east, position: move_square({x, y}, :left)}
-  def do_action(%Robot{orientation: :south, position: {x, y}}, :backward), do: %Robot{orientation: :south, position: move_square({x, y}, :up)}
-  def do_action(%Robot{orientation: :west, position: {x, y}}, :backward), do: %Robot{orientation: :west, position: move_square({x, y}, :right)}
+  def do_action(robot = %Robot{orientation: :north, position: {x, y}}, :backward), do: %{robot | position: move_square({x, y}, :down)}
+  def do_action(robot = %Robot{orientation: :east, position: {x, y}}, :backward), do: %{robot | position: move_square({x, y}, :left)}
+  def do_action(robot = %Robot{orientation: :south, position: {x, y}}, :backward), do: %{robot | position: move_square({x, y}, :up)}
+  def do_action(robot = %Robot{orientation: :west, position: {x, y}}, :backward), do: %{robot | position: move_square({x, y}, :right)}
 
   # Turning right
-  def do_action(%Robot{orientation: :north, position: {x, y}}, :turn_right), do: %Robot{orientation: :east, position: {x, y}}
-  def do_action(%Robot{orientation: :east, position: {x, y}}, :turn_right), do: %Robot{orientation: :south, position: {x, y}}
-  def do_action(%Robot{orientation: :south, position: {x, y}}, :turn_right), do: %Robot{orientation: :west, position: {x, y}}
-  def do_action(%Robot{orientation: :west, position: {x, y}}, :turn_right), do: %Robot{orientation: :north, position: {x, y}}
+  def do_action(robot = %Robot{orientation: :north}, :turn_right), do: %{robot | orientation: :east}
+  def do_action(robot = %Robot{orientation: :east}, :turn_right), do: %{robot | orientation: :south}
+  def do_action(robot = %Robot{orientation: :south}, :turn_right), do: %{robot | orientation: :west}
+  def do_action(robot = %Robot{orientation: :west}, :turn_right), do: %{robot | orientation: :north}
 
   # Turning left
-  def do_action(%Robot{orientation: :north, position: {x, y}}, :turn_left), do: %Robot{orientation: :west, position: {x, y}}
-  def do_action(%Robot{orientation: :east, position: {x, y}}, :turn_left), do: %Robot{orientation: :north, position: {x, y}}
-  def do_action(%Robot{orientation: :south, position: {x, y}}, :turn_left), do: %Robot{orientation: :east, position: {x, y}}
-  def do_action(%Robot{orientation: :west, position: {x, y}}, :turn_left), do: %Robot{orientation: :south, position: {x, y}}
+  def do_action(robot = %Robot{orientation: :north}, :turn_left), do: %{robot | orientation: :west}
+  def do_action(robot = %Robot{orientation: :east}, :turn_left), do: %{robot | orientation: :north}
+  def do_action(robot = %Robot{orientation: :south}, :turn_left), do: %{robot | orientation: :east}
+  def do_action(robot = %Robot{orientation: :west}, :turn_left), do: %{robot | orientation: :south}
 
   defp move_square({x, y}, :up), do: {x, y + 1}
   defp move_square({x, y}, :down), do: {x, y - 1}
